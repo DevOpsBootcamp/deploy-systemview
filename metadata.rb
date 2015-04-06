@@ -1,0 +1,7 @@
+name             'deploy-systemview'
+maintainer       'OSU Open Source Lab'
+maintainer_email 'systems@osuosl.org'
+license          'Apache 2.0'
+description      'Installs/Configures deploy-systemview'
+long_description 'Installs/Configures deploy-systemview'
+version          '0.1.0'
