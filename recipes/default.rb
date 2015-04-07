@@ -51,3 +51,32 @@ python_pip "#{ node['systemview']['app_path'] }/requirements.txt" do
   options '-r'
   virtualenv node['systemview']['virtualenv_path']
 end
+
+python_pip 'gunicorn' do
+  virtualenv node['systemview']['virtualenv_path']
+end
+
+
+gunicorn_config "#{ node['systemview']['app_path'] }/gunicorn_config.py" do
+  listen "0.0.0.0:#{ node['systemview']['gunicorn_port'] }"
+end
+
+supervisor_service 'systemview' do
+  command "#{ node['systemview']['virtualenv_path'] }/bin/gunicorn " \
+    "systemview.wsgi:application -c #{ node['systemview']['app_path'] }" \
+    "/gunicorn_config.py"
+  autorestart true
+  directory node['systemview']['app_path']
+end
+
+template '/etc/nginx/sites-available/systemview.conf' do
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+nginx_site 'default' do
+  enable false
+end
+
+nginx_site 'systemview.conf'
