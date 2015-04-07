@@ -7,3 +7,7 @@ long_description 'Installs/Configures systemview'
 version          '0.1.0'
 
 depends 'python'
+depends 'git'
+depends 'gunicorn'
+depends 'supervisor'
+depends 'nginx'
