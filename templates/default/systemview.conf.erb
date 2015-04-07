@@ -1,0 +1,19 @@
+server {
+  listen 80 default_server;
+  server_name '140.*';
+
+  location /static/ {
+    root <%= node['systemview']['app_path'] %>;
+  }
+  location /media/ {
+    root <%= node['systemview']['app_path'] %>;
+  }
+  location /1/ {
+    add_header 'Access-Control-Allow-Origin' '*';
+    add_header 'Access-Control-Allow-Headers' 'Origin, X-Requested-With, Content-Type, Accept';
+    proxy_pass http://localhost:<%= node['systemview']['gunicorn_port'] %>;
+  }
+  location / {
+    proxy_pass http://localhost:<%= node['systemview']['gunicorn_port'] %>;
+  }
+}
