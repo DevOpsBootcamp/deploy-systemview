@@ -56,6 +56,10 @@ python_pip 'gunicorn' do
   virtualenv node['systemview']['virtualenv_path']
 end
 
+selinux_policy_boolean 'httpd_can_network_connect' do
+  value true
+  notifies :start, 'service[nginx]', :immediate
+end
 
 gunicorn_config "#{ node['systemview']['app_path'] }/gunicorn_config.py" do
   listen "0.0.0.0:#{ node['systemview']['gunicorn_port'] }"
